@@ -1,0 +1,19 @@
+---
+description: After code changes, auto-fix errors before telling user to refresh
+alwaysApply: true
+---
+
+# Auto-verify after changes
+
+After every code change in this project:
+
+1. **Fix errors first** — run checks and repair until clean:
+   - `npm run build` (typecheck + lint + compile)
+   - `read_lints` on edited files
+   - If dev server shows 500 / `.next` manifest errors: `pkill -f "next dev"; rm -rf .next && npm run dev`
+
+2. **Do not ask the user to refresh** until all checks pass with no errors.
+
+3. **When clean**, end with a short confirmation that checks passed and they can refresh (include the relevant URL, e.g. `http://localhost:3000`).
+
+4. **If checks fail after retries**, report the remaining error and what was attempted — do not say "refresh" yet.
