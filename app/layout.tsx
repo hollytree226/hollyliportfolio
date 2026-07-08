@@ -17,6 +17,10 @@ import { site } from "@/data/site";
 export const metadata: Metadata = {
   title: `${site.name} — Portfolio`,
   description: site.hero.statement.slice(0, 160),
+  icons: {
+    icon: "/icon.png",
+    apple: "/icon.png",
+  },
 };
 
 export default function RootLayout({
