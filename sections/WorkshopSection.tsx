@@ -11,6 +11,7 @@ import {
 import { othersMosaic } from "@/data/projects";
 import { site } from "@/data/site";
 import { montserrat } from "@/lib/fonts";
+import { useIsMobile } from "@/lib/useIsMobile";
 import { useSectionScrollGreen } from "@/lib/useSectionScrollGreen";
 
 type TilePosition = { top: number; left: number };
@@ -62,6 +63,7 @@ function tileCssLeft(
 
 export function WorkshopSection() {
   const sectionRef = useSectionScrollGreen<HTMLElement>();
+  const isMobile = useIsMobile();
   const stageRef = useRef<HTMLDivElement>(null);
   const dragSurfaceRef = useRef<HTMLDivElement>(null);
   const [positions, setPositions] = useState<Record<string, TilePosition>>({});
@@ -79,6 +81,8 @@ export function WorkshopSection() {
   const initializedRef = useRef(false);
 
   useLayoutEffect(() => {
+    if (isMobile) return;
+
     const stage = stageRef.current;
     if (!stage || initializedRef.current) return;
 
@@ -100,7 +104,7 @@ export function WorkshopSection() {
 
     observer.observe(stage);
     return () => observer.disconnect();
-  }, []);
+  }, [isMobile]);
 
   const onPointerDown = useCallback(
     (slug: string, event: React.PointerEvent<HTMLDivElement>) => {
@@ -207,8 +211,15 @@ export function WorkshopSection() {
         ) : null}
       </header>
 
-      <div className="others-mosaic__stage" ref={stageRef}>
-        <div className="others-mosaic__drag-surface" ref={dragSurfaceRef} role="list">
+      <div
+        className={`others-mosaic__stage${isMobile ? " others-mosaic__stage--mobile" : ""}`}
+        ref={stageRef}
+      >
+        <div
+          className={`others-mosaic__drag-surface${isMobile ? " others-mosaic__drag-surface--mobile" : ""}`}
+          ref={dragSurfaceRef}
+          role="list"
+        >
           {othersMosaic.map((item) => {
             const position = positions[item.slug];
             const baseZ = item.zIndex ?? 2;
@@ -217,20 +228,22 @@ export function WorkshopSection() {
               <div
                 key={item.slug}
                 role="listitem"
-                className="others-mosaic__tile"
+                className={`others-mosaic__tile${isMobile ? " others-mosaic__tile--mobile" : ""}`}
                 style={
-                  {
-                    top: tileCssPosition(item, position),
-                    left: tileCssLeft(item, position),
-                    width: item.width,
-                    zIndex: zOverrides[item.slug] ?? baseZ,
-                    transform: item.rotate ? `rotate(${item.rotate}deg)` : undefined,
-                  } as CSSProperties
+                  isMobile
+                    ? ({ width: item.width } as CSSProperties)
+                    : ({
+                        top: tileCssPosition(item, position),
+                        left: tileCssLeft(item, position),
+                        width: item.width,
+                        zIndex: zOverrides[item.slug] ?? baseZ,
+                        transform: item.rotate ? `rotate(${item.rotate}deg)` : undefined,
+                      } as CSSProperties)
                 }
-                onPointerDown={(event) => onPointerDown(item.slug, event)}
-                onPointerMove={(event) => onPointerMove(item.slug, event)}
-                onPointerUp={(event) => onPointerUp(item.slug, event)}
-                onPointerCancel={(event) => onPointerUp(item.slug, event)}
+                onPointerDown={isMobile ? undefined : (event) => onPointerDown(item.slug, event)}
+                onPointerMove={isMobile ? undefined : (event) => onPointerMove(item.slug, event)}
+                onPointerUp={isMobile ? undefined : (event) => onPointerUp(item.slug, event)}
+                onPointerCancel={isMobile ? undefined : (event) => onPointerUp(item.slug, event)}
               >
                 <div className="others-mosaic__tile-inner">
                   {/\.(webm|mp4)$/i.test(item.thumbnail) ? (

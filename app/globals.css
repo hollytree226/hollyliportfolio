@@ -1533,6 +1533,50 @@ img {
   }
 }
 
+@media (max-width: 768px) {
+  .hero__work-cursor {
+    display: none !important;
+  }
+
+  .others-mosaic__stage,
+  .others-mosaic__stage--mobile {
+    height: auto;
+    transform: none;
+    width: 100%;
+  }
+
+  .others-mosaic__drag-surface,
+  .others-mosaic__drag-surface--mobile {
+    position: static;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: clamp(1rem, 4vw, 1.5rem);
+    padding-bottom: 1rem;
+  }
+
+  .others-mosaic__tile,
+  .others-mosaic__tile--mobile {
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
+    transform: none !important;
+    width: min(100%, 340px) !important;
+    touch-action: auto;
+  }
+
+  .others-mosaic__tile:nth-child(n + 6) {
+    display: block;
+  }
+
+  .others-mosaic__tile-inner img,
+  .others-mosaic__tile-inner video {
+    width: 100% !important;
+    max-width: 100%;
+    height: auto !important;
+  }
+}
+
 @media (max-width: 960px) {
   .info-page__body {
     grid-template-columns: 1fr;

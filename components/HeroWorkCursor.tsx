@@ -3,16 +3,18 @@
 import { useEffect, useState } from "react";
 import { useReducedMotion } from "framer-motion";
 import { montserrat } from "@/lib/fonts";
+import { useIsMobile } from "@/lib/useIsMobile";
 
 const CURSOR_W = 50;
 const CURSOR_H = 25;
 
 export function HeroWorkCursor() {
   const reduceMotion = useReducedMotion();
+  const isMobile = useIsMobile();
   const [pos, setPos] = useState<{ x: number; y: number } | null>(null);
 
   useEffect(() => {
-    if (reduceMotion) return;
+    if (reduceMotion || isMobile) return;
 
     const onMove = (event: MouseEvent) => {
       setPos({
@@ -26,9 +28,9 @@ export function HeroWorkCursor() {
     return () => {
       document.removeEventListener("mousemove", onMove);
     };
-  }, [reduceMotion]);
+  }, [reduceMotion, isMobile]);
 
-  if (reduceMotion || pos === null) return null;
+  if (reduceMotion || isMobile || pos === null) return null;
 
   return (
     <div

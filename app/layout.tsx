@@ -8,6 +8,7 @@ const myFont = localFont({
 });
 import "./globals.css";
 import { HeroWorkCursor } from "@/components/HeroWorkCursor";
+import { MobileVideoAutoplay } from "@/components/MobileVideoAutoplay";
 import { SiteHeader } from "@/components/SiteHeader";
 import { montserrat } from "@/lib/fonts";
 import { site } from "@/data/site";
@@ -32,6 +33,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={myFont.className}>
         <HeroWorkCursor />
+        <MobileVideoAutoplay />
         <SiteHeader />
         {children}
         <footer className={`footer ${montserrat.className}`}>
