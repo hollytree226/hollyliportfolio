@@ -1188,3 +1188,22 @@ export function getProjectBySlug(slug: string): ProjectDetail | undefined {
 export function getAllProjectSlugs(): string[] {
   return Object.keys(bySlug);
 }
+
+/** Adjacent project arrows only cycle homepage Selected Work (not Others / 3woods). */
+const projectNavOrder: ProjectDetail[] = selectedWork.map(resolveProject);
+
+export function getAdjacentProjects(slug: string): {
+  prev: ProjectDetail | null;
+  next: ProjectDetail | null;
+} {
+  const index = projectNavOrder.findIndex((project) => project.slug === slug);
+  if (index === -1 || projectNavOrder.length < 2) {
+    return { prev: null, next: null };
+  }
+
+  const last = projectNavOrder.length - 1;
+  return {
+    prev: projectNavOrder[index === 0 ? last : index - 1] ?? null,
+    next: projectNavOrder[index === last ? 0 : index + 1] ?? null,
+  };
+}

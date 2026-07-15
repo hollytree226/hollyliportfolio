@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
 import { ProjectGallery } from "@/components/ProjectGallery";
 import { GalleryStickyOverlay } from "@/components/GalleryStickyOverlay";
 import type { DetailBlock, ProjectDetail } from "@/data/types";
@@ -10,9 +10,10 @@ import { montserrat } from "@/lib/fonts";
 type Props = {
   project: ProjectDetail;
   rows: DetailBlock[][];
+  adjacentNav?: ReactNode;
 };
 
-export function IntroGalleryLayout({ project, rows }: Props) {
+export function IntroGalleryLayout({ project, rows, adjacentNav }: Props) {
   const [activeCaption, setActiveCaption] = useState(() =>
     rows[0]?.[0] ? getBlockCaption(rows[0][0]) : "",
   );
@@ -162,6 +163,7 @@ export function IntroGalleryLayout({ project, rows }: Props) {
           rowVariant={project.galleryRowVariant}
           registerCell={registerCell}
         />
+        {adjacentNav}
       </div>
     </div>
   );

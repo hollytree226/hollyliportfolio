@@ -1,5 +1,6 @@
-import { getAllProjectSlugs, getProjectBySlug } from "@/data/projects";
+import { getAdjacentProjects, getAllProjectSlugs, getProjectBySlug } from "@/data/projects";
 import { IntroGalleryLayout } from "@/components/IntroGalleryLayout";
+import { ProjectAdjacentNav } from "@/components/ProjectAdjacentNav";
 import { ProjectMedia } from "@/components/ProjectMedia";
 import { getGalleryRows } from "@/lib/gallery";
 import { notFound } from "next/navigation";
@@ -20,13 +21,18 @@ export default async function ProjectPage({ params }: Props) {
 
   const isIntroGallery = project.pageLayout === "intro-gallery";
   const galleryRows = isIntroGallery ? getGalleryRows(project) : [];
+  const { prev, next } = getAdjacentProjects(slug);
 
   return (
     <article
       className={`project page${isIntroGallery ? " project--intro-gallery" : ""}`}
     >
       {isIntroGallery ? (
-        <IntroGalleryLayout project={project} rows={galleryRows} />
+        <IntroGalleryLayout
+          project={project}
+          rows={galleryRows}
+          adjacentNav={<ProjectAdjacentNav prev={prev} next={next} />}
+        />
       ) : (
         <>
           <header className="project__hero">
@@ -56,6 +62,8 @@ export default async function ProjectPage({ params }: Props) {
           {project.blocks.map((block, index) => (
             <ProjectMedia key={`${block.type}-${index}`} block={block} />
           ))}
+
+          <ProjectAdjacentNav prev={prev} next={next} />
         </>
       )}
     </article>
