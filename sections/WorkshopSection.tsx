@@ -10,6 +10,7 @@ import {
 } from "react";
 import { othersMosaic } from "@/data/projects";
 import { site } from "@/data/site";
+import { OthersGalleryModal } from "@/components/OthersGalleryModal";
 import { montserrat } from "@/lib/fonts";
 import { useIsMobile } from "@/lib/useIsMobile";
 import { useSectionScrollGreen } from "@/lib/useSectionScrollGreen";
@@ -79,6 +80,12 @@ export function WorkshopSection() {
     moved: boolean;
   } | null>(null);
   const initializedRef = useRef(false);
+  const [galleryIndex, setGalleryIndex] = useState<number | null>(null);
+
+  const openGallery = useCallback((slug: string) => {
+    const index = othersMosaic.findIndex((item) => item.slug === slug);
+    if (index !== -1) setGalleryIndex(index);
+  }, []);
 
   useLayoutEffect(() => {
     if (isMobile) return;
@@ -177,13 +184,17 @@ export function WorkshopSection() {
     (slug: string, event: React.PointerEvent<HTMLDivElement>) => {
       const drag = dragRef.current;
       if (!drag || drag.slug !== slug) return;
+
+      const wasClick = !drag.moved;
       dragRef.current = null;
 
       if (event.currentTarget.hasPointerCapture(event.pointerId)) {
         event.currentTarget.releasePointerCapture(event.pointerId);
       }
+
+      if (wasClick) openGallery(slug);
     },
-    [],
+    [openGallery],
   );
 
   return (
@@ -240,6 +251,7 @@ export function WorkshopSection() {
                         transform: item.rotate ? `rotate(${item.rotate}deg)` : undefined,
                       } as CSSProperties)
                 }
+                onClick={isMobile ? () => openGallery(item.slug) : undefined}
                 onPointerDown={isMobile ? undefined : (event) => onPointerDown(item.slug, event)}
                 onPointerMove={isMobile ? undefined : (event) => onPointerMove(item.slug, event)}
                 onPointerUp={isMobile ? undefined : (event) => onPointerUp(item.slug, event)}
@@ -277,6 +289,15 @@ export function WorkshopSection() {
           })}
         </div>
       </div>
+
+      {galleryIndex !== null ? (
+        <OthersGalleryModal
+          items={othersMosaic}
+          index={galleryIndex}
+          onClose={() => setGalleryIndex(null)}
+          onChangeIndex={setGalleryIndex}
+        />
+      ) : null}
     </section>
   );
 }
