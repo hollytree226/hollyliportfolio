@@ -15,6 +15,15 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  async redirects() {
+    return [
+      {
+        source: "/projects/others-01",
+        destination: "/projects/haomarket",
+        permanent: true,
+      },
+    ];
+  },
 };
 
 export default nextConfig;

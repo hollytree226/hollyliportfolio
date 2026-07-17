@@ -6,7 +6,7 @@ export const selectedWork: SelectedWorkEntry[] = [
   { slug: "slayOzen", title: "{brand identity}   slayOzen  {product design}" },
   { slug: "HealingTouch", title: "{brand identity}   HealingTouch  {package design}" },
   { slug: "RAC", title: "{graphic design}   RAC  {illustration}" },
-  { slug: "others-01", title: "{visual design}   hAomarket  {art direction}" },
+  { slug: "haomarket", title: "{visual design}   hAomarket  {art direction}" },
   { slug: "MustangMachE", title: "{merch design}   MustangMachE   {branding}" },
 ];
 
@@ -55,7 +55,7 @@ export const selectedScatter: ScatterThumb[] = [
     height: 81,
     fit: "contain",
     zIndex: 2,
-    linkedSlug: "others-01",
+    linkedSlug: "haomarket",
   },
   {
     id: "s5",
@@ -339,7 +339,7 @@ export const racDetail: ProjectDetail = {
 
 /** Others mosaic → intro-gallery page (RAC layout, no color blocks). */
 export const others01Detail: ProjectDetail = {
-  slug: "others-01",
+  slug: "haomarket",
   title: "hAomarket",
   category: "Visual design, Art direction",
   year: "2024",
@@ -1115,7 +1115,7 @@ const customDetails: Record<string, ProjectDetail> = {
   MustangMachE: mustangMachEDetail,
   HealingTouch: healingTouchDetail,
   slayOzen: slayOzenDetail,
-  "others-01": others01Detail,
+  haomarket: others01Detail,
   "3woods": woodsDetail,
 };
 
